@@ -5,19 +5,20 @@ void main() {
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
-  final String msg = "This is the message";
+
 
   @override
   Widget build(BuildContext context) {
-    return Provider<String>(
-      create: (BuildContext context)=>msg,
+    return ChangeNotifierProvider<Data>(
+      create: (BuildContext context)=>Data(),//now its return the data class
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
-            title: const Text("Provider Demo"),
+            title: const MyText(),
+            centerTitle: true,
           ),
-          body: Level1(),
+          body: const Level1(),
         ),
       ),
     );
@@ -38,8 +39,11 @@ class Level2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Level3(),
+    return Column(
+      children: const [
+        MyTextField(),
+        Level3()
+      ],
     );
   }
 }
@@ -49,10 +53,31 @@ class Level3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(Provider.of<String>(context)),
+      child: Text(Provider.of<Data>(context).data),
     );
   }
 }
 
+class MyText extends StatelessWidget {
+  const MyText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(Provider.of<Data>(context).title);
+  }
+}
+class MyTextField extends StatelessWidget {
+  const MyTextField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
 
 
+//create data class
+class Data extends ChangeNotifier{
+   String data = "This is data";
+   String title = "Provider Demo";
+}
